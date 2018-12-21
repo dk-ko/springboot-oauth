@@ -40,4 +40,7 @@ dependencies {
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 	testCompile('org.springframework.security:spring-security-test')
 	testCompile('io.rest-assured:rest-assured:3.0.3') // Rest API Test
+	
+	compile('org.springframework.session:spring-session')
+	compile('org.springframework.boot:spring-boot-starter-jdbc')
 }
