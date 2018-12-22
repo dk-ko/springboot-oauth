@@ -16,13 +16,16 @@ import org.springframework.security.oauth2.client.resource.OAuth2ProtectedResour
 import org.springframework.security.oauth2.client.token.grant.code.AuthorizationCodeResourceDetails;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableOAuth2Client;
 
+
 @Configuration
 @EnableOAuth2Client
 public class OAuthConfig {
 	private final OAuth2ClientContext oauth2ClientContext;
+	private final GoogleAuthenticationSuccessHandler authenticationSuccessHandler;
 	
-	public OAuthConfig(OAuth2ClientContext oauth2ClientContext) {
+	public OAuthConfig(OAuth2ClientContext oauth2ClientContext, GoogleAuthenticationSuccessHandler authenticationSuccessHandler) {
 		this.oauth2ClientContext = oauth2ClientContext;
+		this.authenticationSuccessHandler = authenticationSuccessHandler;
 	}
 	
 	@Bean
@@ -32,10 +35,8 @@ public class OAuthConfig {
 		OAuth2RestTemplate oAuth2RestTemplate 
 			= new OAuth2RestTemplate(googleClient(), oauth2ClientContext);
 		oauth2Filter.setRestTemplate(oAuth2RestTemplate);
-		oauth2Filter.setTokenServices(
-				 new UserInfoTokenServices(
-						 googleResource().getUserInfoUri(), googleClient().getClientId()));
-
+		oauth2Filter.setTokenServices(new UserInfoTokenServices(googleResource().getUserInfoUri(), googleClient().getClientId()));
+		oauth2Filter.setAuthenticationSuccessHandler(authenticationSuccessHandler);
 		return oauth2Filter;
 	}
 	
