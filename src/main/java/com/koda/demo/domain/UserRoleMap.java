@@ -1,5 +1,7 @@
 package com.koda.demo.domain;
 
+import java.io.Serializable;
+
 import javax.persistence.Entity;
 import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
@@ -13,7 +15,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Getter
 @Entity
-public class UserRoleMap {
+public class UserRoleMap implements Serializable{
 
     @Id
     @GeneratedValue

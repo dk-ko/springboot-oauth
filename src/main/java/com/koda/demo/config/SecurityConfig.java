@@ -7,6 +7,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
 @EnableWebSecurity
@@ -21,12 +22,25 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.antMatcher("/**")
-                .authorizeRequests()
-                .antMatchers("/", "/h2-console/**", "/favicon.ico", "/login**").permitAll()
-                .anyRequest().authenticated()
-                .and().logout().logoutSuccessUrl("/").permitAll()
-                .and().headers().frameOptions().sameOrigin()
-                .and().csrf().disable()
-                .addFilterBefore(ssoFilter, BasicAuthenticationFilter.class);
+        
+        .authorizeRequests()
+        		.antMatchers("/", "/h2-console/**", "/favicon.ico", "/login**")
+        			.permitAll()
+        		.anyRequest()
+                	.authenticated()
+        
+        .and().logout()
+        		.logoutRequestMatcher(new AntPathRequestMatcher("/logout_processing"))
+        		.logoutSuccessUrl("/")
+        			.permitAll()
+        		.invalidateHttpSession(true)
+        		
+        	.and().headers()
+        		.frameOptions()
+        		.sameOrigin()
+        
+        	.and().csrf().disable()
+        		
+        	.addFilterBefore(ssoFilter, BasicAuthenticationFilter.class);
     }
 }

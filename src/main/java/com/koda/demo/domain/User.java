@@ -1,5 +1,6 @@
 package com.koda.demo.domain;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,7 +17,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @Entity
-public class User {
+public class User implements Serializable{
 
     @Id
     @GeneratedValue

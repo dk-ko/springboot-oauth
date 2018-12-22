@@ -35,7 +35,8 @@ public class GoogleAuthenticationSuccessHandler implements AuthenticationSuccess
 	
 	@Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-        httpSession.setAttribute(SessionConstants.LOGIN_USER, getUser(getGoogleUser(authentication)));  
+        httpSession.setAttribute(SessionConstants.LOGIN_USER, getUser(getGoogleUser(authentication)));
+        httpSession.setMaxInactiveInterval(60*30);
         response.sendRedirect("/me");
     }
 	
